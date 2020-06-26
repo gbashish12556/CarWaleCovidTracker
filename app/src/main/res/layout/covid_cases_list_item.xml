@@ -2,16 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
     android:layout_width="match_parent"
     android:paddingTop="10dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/countryName"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="USA"
         android:textColor="#000"
@@ -25,7 +24,7 @@
 
     <TextView
         android:id="@+id/totalCases"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="00000"
         android:textColor="#000"
@@ -37,7 +36,7 @@
 
     <TextView
         android:id="@+id/deaths"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="00000"
         android:textColor="#000"
@@ -49,7 +48,7 @@
 
     <TextView
         android:id="@+id/recovered"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="00000"
         android:textColor="#000"
@@ -63,6 +62,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#000"
-        app:layout_constraintTop_toBottomOf="@id/recovered"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

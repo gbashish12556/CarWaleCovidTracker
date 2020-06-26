@@ -15,7 +15,7 @@
 
             <TextView
                 android:id="@+id/countryName"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="Contry"
                 android:textColor="#000"
@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/totalCases"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="Total Cases"
                 android:textColor="#000"
@@ -41,7 +41,7 @@
 
             <TextView
                 android:id="@+id/deaths"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="Deaths"
                 android:textColor="#000"
@@ -53,7 +53,7 @@
 
             <TextView
                 android:id="@+id/recovered"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="Recovered"
                 android:textColor="#000"
@@ -64,12 +64,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-=
 
-    <android.support.v7.widget.RecyclerView
+    <View
+        android:id="@+id/partion"
+        app:layout_constraintTop_toBottomOf="@id/headerText"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:background="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@+id/headerText"
+        app:layout_constraintTop_toBottomOf="@+id/partion"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="0dp" />

@@ -15,3 +15,6 @@ data class CountryData(@SerializedName("Country")  val country: String, @Seriali
                        , @SerializedName("TotalConfirmed")  val totalConfirmed: Int, @SerializedName("NewDeaths")  val newDeaths: Int
                        , @SerializedName("TotalDeaths")  val totalDeaths: Int, @SerializedName("NewRecovered")  val newRecoveered: Int
                        , @SerializedName("TotalRecovered")  val totalRecovered: Int, @SerializedName("Date")  val date: String)
+
+data class SortData(val sortType:String, var sortField:String)
+data class FilterData(val filterType:String, var filterField:String, var filterValue:Int)

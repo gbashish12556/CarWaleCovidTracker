@@ -1,6 +1,7 @@
 package com.example.carwalecovidtracker
 
 import androidx.lifecycle.MutableLiveData
+import com.example.carwalecovidtracker.pojo.CountryData
 import com.example.carwalecovidtracker.pojo.CovidResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,6 +14,7 @@ class ApiRepository {
 
     private var messageApiStatus: MutableLiveData<Boolean>? = null
     private val covidData = MutableLiveData<CovidResponse>()
+    private val countryWiseList = MutableLiveData<ArrayList<CountryData>>()
 
 
     val allCovidData: MutableLiveData<CovidResponse>
@@ -22,9 +24,17 @@ class ApiRepository {
         }
 
 
+    val allCountryWiseList: MutableLiveData<ArrayList<CountryData>>
+        get() {
+            return countryWiseList
+        }
+
+
+
     fun fetchCovidData() {
 
         val call1 = RetrofitClient.instance.api.covidData
+
         call1.enqueue(object : Callback<CovidResponse> {
 
             override fun onResponse(call: Call<CovidResponse>, response: Response<CovidResponse>) {
@@ -45,5 +55,6 @@ class ApiRepository {
             }
         })
     }
+
 
 }

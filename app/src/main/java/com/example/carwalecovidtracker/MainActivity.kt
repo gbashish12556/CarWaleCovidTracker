@@ -2,25 +2,35 @@ package com.example.carwalecovidtracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
+import android.view.Menu
+import android.view.MenuItem
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
 import com.example.carwalecovidtracker.pojo.CountryData
 import com.example.carwalecovidtracker.pojo.CovidResponse
 import com.google.gson.Gson
 import java.util.ArrayList
 
+
 class MainActivity : AppCompatActivity() {
 
     private var viewModel: ViewModel? = null
-    private var recyclerView: RecyclerView? = null
+//    private var recyclerView: RecyclerView? = null
     private var allCases: ArrayList<CountryData>? = null
+    @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
+
+    private var isCountrySorted = false
+    private var isTotalConfirmedSorted = false
+    private var isDeathSorted = false
+    private var isRecoveredSorted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        recyclerView = findViewById(R.id.recyclerView)
+//        recyclerView = findViewById(R.id.recyclerView)
         initialiseViewModel()
 
     }
@@ -45,5 +55,25 @@ class MainActivity : AppCompatActivity() {
 //                noteAdapter.setData(cases.countryData)
 //            }
 //        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.getItemId()
+        var dialogFragment:DialogFragment? = null
+        when(id){
+            R.id.menu_new_content_sort->{
+                dialogFragment = SortListFragmeent()
+            }
+            R.id.menu_new_content_filter->{
+                dialogFragment = FilterListFragment()
+            }
+        }
+        dialogFragment!!.show(fragmentManager,"Fragment")
+        return super.onOptionsItemSelected(item)
     }
 }

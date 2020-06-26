@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_new_content_sort"
+        android:orderInCategory="100"
+        android:title="@string/sort"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_new_content_filter"
+        android:orderInCategory="200"
+        android:title="@string/filter"
+        app:showAsAction="never" />
+</menu>
