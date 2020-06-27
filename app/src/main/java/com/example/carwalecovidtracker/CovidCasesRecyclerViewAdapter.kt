@@ -1,5 +1,6 @@
 package com.example.carwalecovidtracker
 
+import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +17,28 @@ class CovidCasesRecyclerViewAdapter(private val data: ArrayList<CountryData>) : 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        var countryCode = data[position].countryCode
+
         holder.countryNameTextView.text = data[position].country
         holder.totalCasesTextView.text = data[position].totalConfirmed.toString()
         holder.deathsTextView.text = data[position].totalDeaths.toString()
         holder.recoveredTextView.text = data[position].totalRecovered.toString()
+
+        var userCountry = App.sharedPref.getString(Constant.COUNTRY_NAME,"None")!!.toUpperCase() as CharSequence
+        if(userCountry in countryCode.toUpperCase()){
+//            Log.d(userCountry.toString(),countryName)
+            holder.totalCasesTextView.setTypeface(null, Typeface.BOLD);
+            holder.countryNameTextView.setTypeface(null, Typeface.BOLD);
+            holder.deathsTextView.setTypeface(null, Typeface.BOLD);
+            holder.recoveredTextView.setTypeface(null, Typeface.BOLD);
+
+        }else{
+            holder.totalCasesTextView.setTypeface(null, Typeface.NORMAL);
+            holder.countryNameTextView.setTypeface(null, Typeface.NORMAL);
+            holder.deathsTextView.setTypeface(null, Typeface.NORMAL);
+            holder.recoveredTextView.setTypeface(null, Typeface.NORMAL);
+        }
+
     }
 
     override fun getItemCount(): Int {

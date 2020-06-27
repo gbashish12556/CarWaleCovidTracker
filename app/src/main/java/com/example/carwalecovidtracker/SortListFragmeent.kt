@@ -39,11 +39,8 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        Log.d("onAttach","attached")
         if(context is CommunicationProvider){
-            Log.d("onAttach","FoundPubliisher")
             sortDataPublishSubject = context.getSortingPubSub()
-            Log.d("sortDataPublishSubject",sortDataPublishSubject.toString())
         }
     }
 

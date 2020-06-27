@@ -118,6 +118,7 @@ class ApiRepository {
     }
 
     fun resetFilter(){
+
         var newGlobalData = GlobalData(0,0,0)
 
         for(i in 0..countryList!!.size-1){
@@ -138,7 +139,11 @@ class ApiRepository {
                 when(filterData.filterField){
                     Constant.SORT_COLUMN_TOTAL_CASES->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalConfirmed >= filterData.filterValue){
+                            var usersCountry = App.sharedPref.getString(Constant.COUNTRY_NAME,"None")!!.toUpperCase() as CharSequence
+                            if(usersCountry  in countryList!!.get(i).countryCode.toUpperCase()){
+                                var data = countryList!!.get(i).copy()
+                                newCountryList!!.add(0,data)
+                            }else if(countryList!!.get(i).totalConfirmed >= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }

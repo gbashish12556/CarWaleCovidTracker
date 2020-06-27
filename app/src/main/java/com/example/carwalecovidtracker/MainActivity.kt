@@ -2,7 +2,6 @@ package com.example.carwalecovidtracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -15,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.carwalecovidtracker.pojo.CountryData
-import com.example.carwalecovidtracker.pojo.CovidResponse
 import com.example.carwalecovidtracker.pojo.FilterData
 import com.example.carwalecovidtracker.pojo.SortData
-import com.google.gson.Gson
 import io.reactivex.subjects.PublishSubject
 import java.util.ArrayList
+
+
 
 class MainActivity : AppCompatActivity(),CommunicationProvider {
 
@@ -50,6 +49,8 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this)
         recyclerView!!.layoutManager = LinearLayoutManager(this)
+        val countryName = getResources().getConfiguration().locale.getCountry()
+        App.sharedPref.edit().putString(Constant.COUNTRY_NAME,countryName).apply()
         initialiseViewModel()
 
     }
@@ -76,6 +77,7 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
         sortingPubsub.subscribe{sortData->
             viewModel!!.sortData(sortData)
         }
+
         filterPubsub.subscribe{filterData->
             viewModel!!.filterData(filterData)
         }
