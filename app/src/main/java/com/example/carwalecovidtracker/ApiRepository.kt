@@ -39,41 +39,33 @@ class ApiRepository {
 
         val call1 = RetrofitClient.instance.api.covidData
 
-        var response = "{\"Global\":{\"NewConfirmed\":190531,\"TotalConfirmed\":9557043,\"NewDeaths\":0,\"TotalDeaths\":486079,\"NewRecovered\":398,\"TotalRecovered\":4630138},\"Countries\":[{\"Country\":\"Afghanistan\",\"CountryCode\":\"AF\",\"Slug\":\"afghanistan\",\"NewConfirmed\":694,\"TotalConfirmed\":30175,\"NewDeaths\":0,\"TotalDeaths\":618,\"NewRecovered\":0,\"TotalRecovered\":9260,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Albania\",\"CountryCode\":\"AL\",\"Slug\":\"albania\",\"NewConfirmed\":145,\"TotalConfirmed\":2192,\"NewDeaths\":0,\"TotalDeaths\":45,\"NewRecovered\":0,\"TotalRecovered\":1195,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Algeria\",\"CountryCode\":\"DZ\",\"Slug\":\"algeria\",\"NewConfirmed\":172,\"TotalConfirmed\":12248,\"NewDeaths\":0,\"TotalDeaths\":861,\"NewRecovered\":0,\"TotalRecovered\":8674,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Andorra\",\"CountryCode\":\"AD\",\"Slug\":\"andorra\",\"NewConfirmed\":0,\"TotalConfirmed\":855,\"NewDeaths\":0,\"TotalDeaths\":52,\"NewRecovered\":0,\"TotalRecovered\":797,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Angola\",\"CountryCode\":\"AO\",\"Slug\":\"angola\",\"NewConfirmed\":8,\"TotalConfirmed\":197,\"NewDeaths\":0,\"TotalDeaths\":10,\"NewRecovered\":0,\"TotalRecovered\":77,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Antigua and Barbuda\",\"CountryCode\":\"AG\",\"Slug\":\"antigua-and-barbuda\",\"NewConfirmed\":39,\"TotalConfirmed\":65,\"NewDeaths\":0,\"TotalDeaths\":3,\"NewRecovered\":0,\"TotalRecovered\":22,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Argentina\",\"CountryCode\":\"AR\",\"Slug\":\"argentina\",\"NewConfirmed\":2648,\"TotalConfirmed\":49851,\"NewDeaths\":0,\"TotalDeaths\":1078,\"NewRecovered\":0,\"TotalRecovered\":13576,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Armenia\",\"CountryCode\":\"AM\",\"Slug\":\"armenia\",\"NewConfirmed\":1482,\"TotalConfirmed\":22488,\"NewDeaths\":0,\"TotalDeaths\":372,\"NewRecovered\":0,\"TotalRecovered\":10144,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Australia\",\"CountryCode\":\"AU\",\"Slug\":\"australia\",\"NewConfirmed\":37,\"TotalConfirmed\":7558,\"NewDeaths\":0,\"TotalDeaths\":103,\"NewRecovered\":0,\"TotalRecovered\":6924,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Austria\",\"CountryCode\":\"AT\",\"Slug\":\"austria\",\"NewConfirmed\":69,\"TotalConfirmed\":17477,\"NewDeaths\":0,\"TotalDeaths\":693,\"NewRecovered\":0,\"TotalRecovered\":16261,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Azerbaijan\",\"CountryCode\":\"AZ\",\"Slug\":\"azerbaijan\",\"NewConfirmed\":590,\"TotalConfirmed\":14305,\"NewDeaths\":0,\"TotalDeaths\":167,\"NewRecovered\":0,\"TotalRecovered\":7503,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Bahamas\",\"CountryCode\":\"BS\",\"Slug\":\"bahamas\",\"NewConfirmed\":0,\"TotalConfirmed\":104,\"NewDeaths\":0,\"TotalDeaths\":11,\"NewRecovered\":0,\"TotalRecovered\":83,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Bahrain\",\"CountryCode\":\"BH\",\"Slug\":\"bahrain\",\"NewConfirmed\":508,\"TotalConfirmed\":23570,\"NewDeaths\":0,\"TotalDeaths\":67,\"NewRecovered\":0,\"TotalRecovered\":17450,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Bangladesh\",\"CountryCode\":\"BD\",\"Slug\":\"bangladesh\",\"NewConfirmed\":7408,\"TotalConfirmed\":126606,\"NewDeaths\":0,\"TotalDeaths\":1545,\"NewRecovered\":0,\"TotalRecovered\":47635,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Barbados\",\"CountryCode\":\"BB\",\"Slug\":\"barbados\",\"NewConfirmed\":0,\"TotalConfirmed\":97,\"NewDeaths\":0,\"TotalDeaths\":7,\"NewRecovered\":0,\"TotalRecovered\":85,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Belarus\",\"CountryCode\":\"BY\",\"Slug\":\"belarus\",\"NewConfirmed\":895,\"TotalConfirmed\":60382,\"NewDeaths\":0,\"TotalDeaths\":357,\"NewRecovered\":0,\"TotalRecovered\":38688,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Belgium\",\"CountryCode\":\"BE\",\"Slug\":\"belgium\",\"NewConfirmed\":197,\"TotalConfirmed\":61007,\"NewDeaths\":0,\"TotalDeaths\":9713,\"NewRecovered\":0,\"TotalRecovered\":16771,\"Date\":\"2020-06-25T19:46:08Z\"},{\"Country\":\"Zimbabwe\",\"CountryCode\":\"ZW\",\"Slug\":\"zimbabwe\",\"NewConfirmed\":5,\"TotalConfirmed\":530,\"NewDeaths\":0,\"TotalDeaths\":6,\"NewRecovered\":0,\"TotalRecovered\":64,\"Date\":\"2020-06-25T19:46:08Z\"}],\"Date\":\"2020-06-25T19:46:08Z\"}"
+        call1.enqueue(object : Callback<CovidResponse> {
 
-        var covidResponse = Gson().fromJson<CovidResponse>(response,CovidResponse::class.java)
-        globaldata.postValue(covidResponse.globalData)
-        countryList = covidResponse.countryData
-        countryWiseList.postValue(countryList)
-        filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
+            override fun onResponse(call: Call<CovidResponse>, response: Response<CovidResponse>) {
+                if (response.code() == 200) {
+                    val covidResponse = response.body()
+                    if (covidResponse !=  null) {
 
-//        call1.enqueue(object : Callback<CovidResponse> {
-//
-//            override fun onResponse(call: Call<CovidResponse>, response: Response<CovidResponse>) {
-//                if (response.code() == 200) {
-//                    val covidResponse = response.body()
-//                    if (covidResponse !=  null) {
-//
-//                        globaldata.postValue(covidResponse.globalData)
-//                        countryList = covidResponse.countryData
-//                        countryWiseList.postValue(countryList)
-//                        filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
-//
-//                    } else {
-//
-//                        messageApiStatus!!.postValue(false)
-//
-//                    }
-//
-//                } else {
-//                    messageApiStatus!!.postValue(false)
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CovidResponse>, t: Throwable) {
-//                messageApiStatus!!.value = false
-//            }
-//        })
+                        globaldata.postValue(covidResponse.globalData)
+                        countryList = covidResponse.countryData
+                        countryWiseList.postValue(countryList)
+                        filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
+
+                    } else {
+
+                        messageApiStatus!!.postValue(false)
+
+                    }
+
+                } else {
+                    messageApiStatus!!.postValue(false)
+                }
+            }
+
+            override fun onFailure(call: Call<CovidResponse>, t: Throwable) {
+                messageApiStatus!!.value = false
+            }
+        })
     }
 
     fun sortData(sortData:SortData){
