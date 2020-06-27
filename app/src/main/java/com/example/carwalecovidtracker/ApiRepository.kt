@@ -128,6 +128,7 @@ class ApiRepository {
 
         globaldata.postValue(newGlobalData)
         allCountryWiseList.postValue(countryList as ArrayList<CountryData>?)
+        addFilter(FilterData("","",0))
     }
     fun filterData(filterData:FilterData){
         var newCountryList = mutableListOf<CountryData>()
@@ -196,6 +197,17 @@ class ApiRepository {
 
         globaldata.postValue(newGlobalData)
         allCountryWiseList.postValue(newCountryList as ArrayList<CountryData>?)
+        addFilter(filterData)
+
+    }
+
+    fun addFilter(filterData:FilterData){
+
+        val editor = App.sharedPref.edit()
+        editor.putString(Constant.FILTER_RANGE_TYPE, filterData.filterType);
+        editor.putString(Constant.FILTER_FIELD, filterData.filterField);
+        editor.putInt(Constant.FILTER_VALUE, filterData.filterValue);
+        editor.apply()
 
     }
 
