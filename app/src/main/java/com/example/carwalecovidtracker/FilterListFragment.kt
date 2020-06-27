@@ -9,12 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.carwalecovidtracker.pojo.FilterData
-import com.example.carwalecovidtracker.pojo.SortData
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -24,8 +21,8 @@ class FilterListFragment : androidx.fragment.app.DialogFragment() {
 
     @BindView(R.id.sortListButton) lateinit var sortListButton: Button
     @BindView(R.id.closeDialog) lateinit var closeDialog: ImageView
-    @BindView(R.id.sortLisField) lateinit var sortLisField: Spinner
-    @BindView(R.id.sortListype) lateinit var sortListype: Spinner
+    @BindView(R.id.filterListField) lateinit var filterListField: Spinner
+    @BindView(R.id.filterRangeType) lateinit var filterRangeType: Spinner
     @BindView(R.id.filterValue) lateinit var filterValue: EditText
     private var filterListPublishSubject: PublishSubject<FilterData>? = null
 
@@ -50,31 +47,45 @@ class FilterListFragment : androidx.fragment.app.DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         this.isCancelable = false
         ButterKnife.bind(this, view);
+        var sharedPref = App.sharedPref
+        var selectedFilterValueInt = sharedPref.getInt(Constant.FILTER_VALUE,0)
+        filterValue.setText(selectedFilterValueInt.toString())
+        if(selectedFilterValueInt != 0) {
+            var selectedFilterField = sharedPref.getString(Constant.FILTER_FIELD,"")
+            var selectedFilterRangeValue = sharedPref.getString(Constant.FILTER_FIELD,"")
+            filterListField.setSelection(resources.getStringArray(R.array.filter_list_field).indexOf(selectedFilterField))
+            filterRangeType.setSelection(resources.getStringArray(R.array.filter_range_type).indexOf(selectedFilterRangeValue))
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         closeDialog.setOnClickListener{
             dismiss()
         }
+
         sortListButton.setOnClickListener{
-            var listType = sortListype.selectedItem.toString()
-            var listField = sortLisField.selectedItem.toString()
+            var listType = filterRangeType.selectedItem.toString()
+            var listField = filterListField.selectedItem.toString()
             var filterValue = filterValue.text.toString()
             if(validateFields(listType,listField,filterValue)){
                 filterListPublishSubject!!.onNext(FilterData(listType,listField, Integer.parseInt(filterValue)))
                 dismiss()
             }
         }
+
     }
 
     fun validateFields(listType:String,listField:String,filterValue:String):Boolean{
+
         if(!listType.equals("") && !listField.equals("") && !filterValue.equals("")){
             return true
         }else{
-            Toast.makeText(activity,"Iinvalid Fields", Toast.LENGTH_LONG)
+            Toast.makeText(activity,"Invalid Fields", Toast.LENGTH_LONG)
             return false
         }
+
     }
 
     override fun onStart() {

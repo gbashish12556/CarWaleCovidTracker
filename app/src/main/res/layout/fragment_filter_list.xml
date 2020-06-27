@@ -22,8 +22,8 @@
             android:layout_height="wrap_content" />
 
         <Spinner
-            android:id="@+id/sortLisField"
-            android:entries="@array/filter_list"
+            android:id="@+id/filterListField"
+            android:entries="@array/filter_list_field"
             app:layout_constraintTop_toBottomOf="@+id/closeDialog"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,9 +31,9 @@
             android:layout_height="wrap_content" />
 
         <Spinner
-            android:id="@+id/sortListype"
+            android:id="@+id/filterRangeType"
             android:layout_width="150dp"
-            android:entries="@array/raneg_type"
+            android:entries="@array/filter_range_type"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@id/sortListButton"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,9 +45,9 @@
             android:hint="Enter Value"
             android:layout_marginRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/sortListype"
-            app:layout_constraintTop_toTopOf="@id/sortListype"
-            app:layout_constraintBottom_toBottomOf="@id/sortListype"
+            app:layout_constraintStart_toEndOf="@id/filterRangeType"
+            app:layout_constraintTop_toTopOf="@id/filterRangeType"
+            app:layout_constraintBottom_toBottomOf="@id/filterRangeType"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 

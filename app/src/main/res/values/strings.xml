@@ -5,6 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sort">Sort</string>
     <string name="filter">Filter</string>
+    <string name="reset">Reset</string>
 
     <string-array name="sort_list_field">
         <item>Country</item>
@@ -18,12 +19,12 @@
         <item>Descending</item>
     </string-array>
 
-    <string-array name="raneg_type">
+    <string-array name="filter_range_type">
         <item>&gt;=</item>
-        <item>&lt;</item>
+        <item>&lt;=</item>
     </string-array>
 
-    <string-array name="filter_list">
+    <string-array name="filter_list_field">
         <item>Total Cases</item>
         <item>Deaths</item>
         <item>Recovered</item>

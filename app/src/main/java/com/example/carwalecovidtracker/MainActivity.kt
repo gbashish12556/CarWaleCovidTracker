@@ -22,12 +22,10 @@ import com.google.gson.Gson
 import io.reactivex.subjects.PublishSubject
 import java.util.ArrayList
 
-
 class MainActivity : AppCompatActivity(),CommunicationProvider {
 
 
     private var viewModel: ViewModel? = null
-//    private var recyclerView: RecyclerView? = null
     private var allCases: ArrayList<CountryData>? = null
     @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
     @BindView(R.id.scrollUp) lateinit var scrollUp: ImageView
@@ -35,11 +33,6 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
     @BindView(R.id.totalConfirmed) lateinit var totalConfirmed: TextView
     @BindView(R.id.totalDeaths) lateinit var totalDeaths: TextView
     @BindView(R.id.totalRecovered) lateinit var totalRecovered: TextView
-
-    private var isCountrySorted = false
-    private var isTotalConfirmedSorted = false
-    private var isDeathSorted = false
-    private var isRecoveredSorted = false
     var dialogFragment:DialogFragment? = null
     private var sortingPubsub:PublishSubject<SortData> = PublishSubject.create()
     private var filterPubsub:PublishSubject<FilterData> = PublishSubject.create()
@@ -81,7 +74,6 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
         })
 
         viewModel!!.globalData.observe(this, Observer {globaldata->
-            Log.d("globalData","changed")
             totalConfirmed.text = String.format(resources.getString(R.string.total_confirmed,globaldata.totalConfirmed.toString()))
             totalDeaths.text = String.format(resources.getString(R.string.total_deaths,globaldata.totalDeaths.toString()))
             totalRecovered.text = String.format(resources.getString(R.string.total_recovered,globaldata.totalRecovered.toString()))
@@ -91,6 +83,7 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
             viewModel!!.sortData(sortData)
         }
         filterPubsub.subscribe{filterData->
+            addFilter(filterData)
             viewModel!!.filterData(filterData)
         }
 
@@ -115,12 +108,27 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
         when(id){
             R.id.menu_new_content_sort->{
                 dialogFragment = SortListFragmeent()
+                dialogFragment!!.show(supportFragmentManager,"DialogFragment")
             }
             R.id.menu_new_content_filter->{
                 dialogFragment = FilterListFragment()
+                dialogFragment!!.show(supportFragmentManager,"DialogFragment")
+            }
+            R.id.menu_new_content_reset->{
+                viewModel!!.resetFilter()
+                addFilter(FilterData("","",0))
             }
         }
-        dialogFragment!!.show(supportFragmentManager,"DialogFragment")
         return super.onOptionsItemSelected(item)
+    }
+
+    fun addFilter(filterData:FilterData){
+
+        val editor = App.sharedPref.edit()
+        editor.putString(Constant.FILTER_RANGE_TYPE, filterData.filterType);
+        editor.putString(Constant.FILTER_FIELD, filterData.filterField);
+        editor.putInt(Constant.FILTER_VALUE, filterData.filterValue);
+        editor.apply()
+
     }
 }

@@ -24,6 +24,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         apiRepository.filterData(filteData)
     }
 
+    fun resetFilter(){
+        apiRepository.resetFilter()
+    }
+
     init {
         apiRepository = ApiRepository()
     }

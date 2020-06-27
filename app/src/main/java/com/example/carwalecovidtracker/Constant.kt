@@ -10,7 +10,11 @@ class Constant {
         const val SORT_TYPE_ASC = "Ascending"
         const val SORT_TYPE_DESC = "Descending"
         const val FILTER_TYPE_GRT = ">="
-        const val FILTER_TYPE_LESS = "<"
+        const val FILTER_TYPE_LESS = "<="
+        const val FILTER_RANGE_TYPE = "filteeType"
+        const val FILTER_FIELD = "filteeField"
+        const val FILTER_VALUE = "filteeValue"
+
     }
 
 }

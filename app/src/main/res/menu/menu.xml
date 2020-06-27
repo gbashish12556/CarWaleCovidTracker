@@ -13,4 +13,10 @@
         android:orderInCategory="200"
         android:title="@string/filter"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_new_content_reset"
+        android:orderInCategory="200"
+        android:title="@string/reset"
+        app:showAsAction="never" />
 </menu>

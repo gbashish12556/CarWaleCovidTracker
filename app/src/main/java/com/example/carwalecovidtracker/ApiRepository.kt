@@ -46,17 +46,25 @@ class ApiRepository {
         countryList = covidResponse.countryData
         countryWiseList.postValue(countryList)
         filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
+
 //        call1.enqueue(object : Callback<CovidResponse> {
 //
 //            override fun onResponse(call: Call<CovidResponse>, response: Response<CovidResponse>) {
 //                if (response.code() == 200) {
-//                    val reponse = response.body()
-//                    if (reponse !=  null) {
-//                        covidData.postValue(reponse)
-//                        countryList = reponse.countryData
+//                    val covidResponse = response.body()
+//                    if (covidResponse !=  null) {
+//
+//                        globaldata.postValue(covidResponse.globalData)
+//                        countryList = covidResponse.countryData
+//                        countryWiseList.postValue(countryList)
+//                        filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
+//
 //                    } else {
+//
 //                        messageApiStatus!!.postValue(false)
+//
 //                    }
+//
 //                } else {
 //                    messageApiStatus!!.postValue(false)
 //                }
@@ -117,6 +125,18 @@ class ApiRepository {
         this.countryWiseList.postValue(countryList)
     }
 
+    fun resetFilter(){
+        var newGlobalData = GlobalData(0,0,0)
+
+        for(i in 0..countryList!!.size-1){
+            newGlobalData.totalConfirmed += countryList!![i].totalConfirmed
+            newGlobalData.totalDeaths += countryList!![i].totalDeaths
+            newGlobalData.totalRecovered += countryList!![i].totalRecovered
+        }
+
+        globaldata.postValue(newGlobalData)
+        allCountryWiseList.postValue(countryList as ArrayList<CountryData>?)
+    }
     fun filterData(filterData:FilterData){
         var newCountryList = mutableListOf<CountryData>()
         var newGlobalData = GlobalData(0,0,0)
@@ -125,7 +145,7 @@ class ApiRepository {
                 when(filterData.filterField){
                     Constant.SORT_COLUMN_TOTAL_CASES->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalConfirmed > filterData.filterValue){
+                            if(countryList!!.get(i).totalConfirmed >= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }
@@ -135,14 +155,14 @@ class ApiRepository {
                     }
                     Constant.SORT_COLUMN_DEATHS->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalDeaths > filterData.filterValue){
+                            if(countryList!!.get(i).totalDeaths >= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }
                     }
                     Constant.SORT_COLUMN_RECOVERED->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalRecovered > filterData.filterValue){
+                            if(countryList!!.get(i).totalRecovered >= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }
@@ -153,21 +173,21 @@ class ApiRepository {
                 when(filterData.filterField){
                     Constant.SORT_COLUMN_TOTAL_CASES->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalConfirmed < filterData.filterValue){
+                            if(countryList!!.get(i).totalConfirmed <= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }
                     }
                     Constant.SORT_COLUMN_DEATHS->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalDeaths < filterData.filterValue){
+                            if(countryList!!.get(i).totalDeaths <= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }
                     }
                     Constant.SORT_COLUMN_RECOVERED->{
                         for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalRecovered < filterData.filterValue){
+                            if(countryList!!.get(i).totalRecovered <= filterData.filterValue){
                                 newCountryList.add(countryList!!.get(i))
                             }
                         }
