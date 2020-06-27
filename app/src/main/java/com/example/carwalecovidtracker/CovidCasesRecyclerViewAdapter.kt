@@ -1,5 +1,6 @@
 package com.example.carwalecovidtracker
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,11 @@ class CovidCasesRecyclerViewAdapter(private val data: ArrayList<CountryData>) : 
     }
 
     fun setData(data: List<CountryData>) {
+        this.data.clear()
         this.data.addAll(data)
+        for(i in 0..data!!.size-1){
+            Log.d(data!!.get(i).country, data!!.get(i).totalRecovered.toString())
+        }
         notifyDataSetChanged()
     }
 }

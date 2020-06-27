@@ -2,7 +2,7 @@ package com.example.carwalecovidtracker
 
 import com.example.carwalecovidtracker.pojo.CountryData
 
-class Compartors {
+class Comparators {
 
     inner class DateCompratorAsc:Comparator<CountryData> {
         override fun compare(country1: CountryData?, country2: CountryData?): Int {
@@ -49,6 +49,18 @@ class Compartors {
     inner class TotalRecoveredDesc:Comparator<CountryData> {
         override fun compare(country1: CountryData?, country2: CountryData?): Int {
             return country2!!.totalRecovered.compareTo(country1!!.totalRecovered)
+        }
+    }
+
+    inner class CountryAsc:Comparator<CountryData> {
+        override fun compare(country1: CountryData?, country2: CountryData?): Int {
+            return country1!!.country.compareTo(country2!!.country)
+        }
+    }
+
+    inner class CountryDesc:Comparator<CountryData> {
+        override fun compare(country1: CountryData?, country2: CountryData?): Int {
+            return country2!!.country.compareTo(country1!!.country)
         }
     }
 

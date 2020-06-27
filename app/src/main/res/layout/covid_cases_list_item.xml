@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:text="USA"
         android:textColor="#000"
-        android:layout_marginRight="10dp"
         android:textSize="17sp"
         app:layout_constraintEnd_toStartOf="@+id/totalCases"
         app:layout_constraintHorizontal_bias="0.5"

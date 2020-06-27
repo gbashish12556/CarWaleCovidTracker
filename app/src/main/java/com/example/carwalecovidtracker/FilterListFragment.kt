@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import butterknife.BindView
+import butterknife.ButterKnife
 import com.example.carwalecovidtracker.pojo.FilterData
 import com.example.carwalecovidtracker.pojo.SortData
 import io.reactivex.subjects.PublishSubject
@@ -47,14 +46,34 @@ class FilterListFragment : androidx.fragment.app.DialogFragment() {
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        this.isCancelable = false
+        ButterKnife.bind(this, view);
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         closeDialog.setOnClickListener{
             dismiss()
         }
         sortListButton.setOnClickListener{
-            filterListPublishSubject!!.onNext(FilterData(sortListype.selectedItem.toString(),sortLisField.selectedItem.toString(), Integer.parseInt(filterValue.text.toString())))
-            dismiss()
+            var listType = sortListype.selectedItem.toString()
+            var listField = sortLisField.selectedItem.toString()
+            var filterValue = filterValue.text.toString()
+            if(validateFields(listType,listField,filterValue)){
+                filterListPublishSubject!!.onNext(FilterData(listType,listField, Integer.parseInt(filterValue)))
+                dismiss()
+            }
+        }
+    }
+
+    fun validateFields(listType:String,listField:String,filterValue:String):Boolean{
+        if(!listType.equals("") && !listField.equals("") && !filterValue.equals("")){
+            return true
+        }else{
+            Toast.makeText(activity,"Iinvalid Fields", Toast.LENGTH_LONG)
+            return false
         }
     }
 

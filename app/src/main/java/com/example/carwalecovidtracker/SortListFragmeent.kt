@@ -3,6 +3,7 @@ package com.example.carwalecovidtracker
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,9 +12,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
+import butterknife.ButterKnife
 import com.example.carwalecovidtracker.pojo.SortData
 import io.reactivex.subjects.PublishSubject
 
@@ -38,11 +42,20 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        Log.d("onAttach","attached")
         if(context is CommunicationProvider){
+            Log.d("onAttach","FoundPubliisher")
             sortDataPublishSubject = context.getSortingPubSub()
+            Log.d("sortDataPublishSubject",sortDataPublishSubject.toString())
         }
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        this.isCancelable = false
+        ButterKnife.bind(this, view);
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -50,10 +63,29 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
             dismiss()
         }
         sortListButton.setOnClickListener{
-            sortDataPublishSubject!!.onNext(SortData(sortListype.selectedItem.toString(),sortLisField.selectedItem.toString()))
-            dismiss()
+            var sortingType = sortListype.selectedItem.toString()
+            var sortingFields = sortLisField.selectedItem.toString()
+
+            Log.d("sortingType",sortingType)
+            Log.d("sortingFields",sortingFields)
+
+            if(validateFields(sortingType, sortingFields)) {
+                sortDataPublishSubject!!.onNext(SortData(sortingType, sortingFields))
+                dismiss()
+            }
+
         }
     }
+
+    fun validateFields(listType:String,listField:String):Boolean{
+        if(!listType.equals("") && !listField.equals("")){
+            return true
+        }else{
+            Toast.makeText(activity,"Iinvalid Fields", Toast.LENGTH_LONG)
+            return false
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
