@@ -23,7 +23,6 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.RootMatchers.isFocusable;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
@@ -36,6 +35,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static androidx.test.espresso.intent.matcher.UriMatchers.hasHost;
 
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.carwalecovidtracker.TestHelper.getText;
 import static com.example.carwalecovidtracker.TestHelper.greaterThanTheNumber;
 import static com.example.carwalecovidtracker.TestHelper.lessThanTheNumber;
 import static com.example.carwalecovidtracker.TestHelper.waitFor;
@@ -78,6 +78,54 @@ public class MainActivityTest {
         onView(withRecyclerView(R.id.recyclerView)
                 .atPositionOnView(0, R.id.countryName))
                 .check(matches(withText("India")));
+
+    }
+
+    @Test
+    public void checkif_sort_ascending_is_working() throws InterruptedException {
+        // Step-1: Click Sort button
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
+        onView(withText(Constant.SORT)).perform(click());
+
+        //Enter values in spinners and click sort
+        onView(withId(R.id.sortListField)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.SORT_COLUMN_TOTAL_CASES))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withId(R.id.sortRangeType)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.SORT_TYPE_ASC))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withId(R.id.sortListButton)).perform(click());
+
+        onView(withRecyclerView(R.id.recyclerView)
+                .atPositionOnView(0, R.id.totalCases))
+                .check(matches(lessThanTheNumber(Integer.parseInt(getText(withRecyclerView(R.id.recyclerView)
+                        .atPositionOnView(1, R.id.totalCases))))));
+
+    }
+
+    @Test
+    public void checkif_sort_descending_is_working() throws InterruptedException {
+        // Step-1: Click Sort button
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
+        onView(withText(Constant.SORT)).perform(click());
+
+        //Enter values in spinners and click sort
+        onView(withId(R.id.sortListField)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.SORT_COLUMN_TOTAL_CASES))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withId(R.id.sortRangeType)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.SORT_TYPE_DESC))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withId(R.id.sortListButton)).perform(click());
+
+        onView(withRecyclerView(R.id.recyclerView)
+                .atPositionOnView(0, R.id.totalCases))
+                .check(matches(greaterThanTheNumber(Integer.parseInt(getText(withRecyclerView(R.id.recyclerView)
+                        .atPositionOnView(1, R.id.totalCases))))));
 
     }
 

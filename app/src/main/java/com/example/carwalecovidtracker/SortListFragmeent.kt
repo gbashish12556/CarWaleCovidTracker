@@ -25,8 +25,8 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
 
     @BindView(R.id.sortListButton) lateinit var sortListButton: Button
     @BindView(R.id.closeDialog) lateinit var closeDialog: ImageView
-    @BindView(R.id.filterListField) lateinit var sortLisField: Spinner
-    @BindView(R.id.filterRangeType) lateinit var sortListype: Spinner
+    @BindView(R.id.sortListField) lateinit var sortLisField: Spinner
+    @BindView(R.id.sortRangeType) lateinit var sortRangeType: Spinner
     private var sortDataPublishSubject:PublishSubject<SortData>? = null
 
     override fun onCreateView(
@@ -57,7 +57,7 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
             dismiss()
         }
         sortListButton.setOnClickListener{
-            var sortingType = sortListype.selectedItem.toString()
+            var sortingType = sortRangeType.selectedItem.toString()
             var sortingFields = sortLisField.selectedItem.toString()
             if(validateFields(sortingType, sortingFields)) {
                 dismiss()
