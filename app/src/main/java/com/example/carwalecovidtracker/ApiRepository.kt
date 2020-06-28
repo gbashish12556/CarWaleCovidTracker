@@ -49,12 +49,7 @@ class ApiRepository {
                         filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
 
                     } else {
-
-                        var data = Gson().fromJson(response,CovidResponse::class.java)
-                        globaldata.postValue(data!!.globalData)
-                        countryList = data.countryData
-                        countryWiseList.postValue(countryList)
-                        filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
+                        
 //                        messageApiStatus!!.postValue(false)
 
                     }
