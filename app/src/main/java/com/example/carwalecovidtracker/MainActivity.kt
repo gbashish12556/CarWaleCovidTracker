@@ -7,11 +7,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.NonNull
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.IdlingResource
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.carwalecovidtracker.pojo.CountryData
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
     @BindView(R.id.totalDeaths) lateinit var totalDeaths: TextView
     @BindView(R.id.totalRecovered) lateinit var totalRecovered: TextView
     var dialogFragment:DialogFragment? = null
+    private var mIdlingResource: RetrofitIdlingResource? = null
     private var sortingPubsub:PublishSubject<SortData> = PublishSubject.create()
     private var filterPubsub:PublishSubject<FilterData> = PublishSubject.create()
 
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        getIdlingResource()
         ButterKnife.bind(this)
         recyclerView!!.layoutManager = LinearLayoutManager(this)
         initialiseViewModel()
@@ -131,4 +136,14 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
         editor.apply()
 
     }
+
+    @VisibleForTesting
+    @NonNull
+    fun getIdlingResource(): IdlingResource {
+        if (mIdlingResource == null) {
+            mIdlingResource = RetrofitIdlingResource()
+        }
+        return mIdlingResource!!
+    }
+
 }
