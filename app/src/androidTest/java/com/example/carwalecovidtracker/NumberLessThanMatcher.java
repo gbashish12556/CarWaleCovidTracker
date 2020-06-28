@@ -19,7 +19,7 @@ class NumberLessThanMatcher extends BoundedMatcher<View, TextView> {
         return Integer.parseInt(item.getText().toString()) < this.no ;
     }
     @Override public void describeTo(Description description) {
-        description.appendText("with hint text color:").appendValue(String.valueOf(this.no));
+        description.appendText("Did not match with:").appendValue(String.valueOf(this.no));
     }
 }
 
