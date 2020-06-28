@@ -13,6 +13,7 @@ import kotlin.collections.ArrayList
 
 class ApiRepository {
 
+    private val messageApiStatus = MutableLiveData<Boolean>()
     private val globaldata = MutableLiveData<GlobalData>()
     private val countryWiseList = MutableLiveData<ArrayList<CountryData>>()
     private var countryList:ArrayList<CountryData>? = null
@@ -49,18 +50,18 @@ class ApiRepository {
                         filterData(FilterData(Constant.FILTER_TYPE_GRT,Constant.SORT_COLUMN_TOTAL_CASES,0))
 
                     } else {
-                        
-//                        messageApiStatus!!.postValue(false)
+
+                        messageApiStatus!!.postValue(false)
 
                     }
 
                 } else {
-//                    messageApiStatus!!.postValue(false)
+                    messageApiStatus!!.postValue(false)
                 }
             }
 
             override fun onFailure(call: Call<CovidResponse>, t: Throwable) {
-//                messageApiStatus!!.value = false
+                messageApiStatus!!.value = false
             }
         })
     }
