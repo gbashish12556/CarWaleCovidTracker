@@ -52,7 +52,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/sortListButton"
+            android:id="@+id/filterListButton"
             android:text="Filter"
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"

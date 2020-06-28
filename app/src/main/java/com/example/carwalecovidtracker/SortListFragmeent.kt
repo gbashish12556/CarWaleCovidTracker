@@ -39,11 +39,8 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        Log.d("onAttach","attached")
         if(context is CommunicationProvider){
-            Log.d("onAttach","FoundPubliisher")
             sortDataPublishSubject = context.getSortingPubSub()
-            Log.d("sortDataPublishSubject",sortDataPublishSubject.toString())
         }
     }
 
@@ -63,8 +60,8 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
             var sortingType = sortListype.selectedItem.toString()
             var sortingFields = sortLisField.selectedItem.toString()
             if(validateFields(sortingType, sortingFields)) {
-                sortDataPublishSubject!!.onNext(SortData(sortingType, sortingFields))
                 dismiss()
+                sortDataPublishSubject!!.onNext(SortData(sortingType, sortingFields))
             }
 
         }

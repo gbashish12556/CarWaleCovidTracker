@@ -1,6 +1,8 @@
 package com.example.carwalecovidtracker;
 
 
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.rule.ActivityTestRule;
@@ -10,6 +12,40 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressBack;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
+import static androidx.test.espresso.matcher.RootMatchers.isFocusable;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+
+
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasCategories;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static androidx.test.espresso.intent.matcher.UriMatchers.hasHost;
+
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.carwalecovidtracker.TestHelper.greaterThanTheNumber;
+import static com.example.carwalecovidtracker.TestHelper.lessThanTheNumber;
+import static com.example.carwalecovidtracker.TestHelper.waitFor;
+import static com.example.carwalecovidtracker.TestHelper.withRecyclerView;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.AllOf.allOf;
+
 
 
 @RunWith(AndroidJUnit4.class)
@@ -34,15 +70,62 @@ public class MainActivityTest {
         IdlingRegistry.getInstance().register(mIdlingResource);
     }
 
+
     @Test
-    public void checkif_correct_episode_launched() {
-        // Step-1: Click 'See Photos' button
-//
-//        onView(withId(R.id.learnByPractice)).perform(click());
-//        onView(withId(R.id.rv_parent)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-//
-//        // Checks that the GalleryActivity opens with the correct listing name displayed
-//        onView(withId(R.id.gridViewRV)).check((ViewAssertion) isDisplayed());
+    public void checkif_first_row_country_is_india() {
+        // Step-1: Click Sort button
+
+        onView(withRecyclerView(R.id.recyclerView)
+                .atPositionOnView(0, R.id.countryName))
+                .check(matches(withText("India")));
+
+    }
+
+    @Test
+    public void checkif_lessthan_condition_in_filter_is_working() {
+        // Step-1: Click Sort button
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
+        onView(withText(Constant.FILTER)).perform(click());
+
+        onView(withId(R.id.filterValue)).perform(typeText("500"), closeSoftKeyboard());
+
+        //Enter values in spinners and click sort
+        onView(withId(R.id.filterListField)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.SORT_COLUMN_DEATHS))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withId(R.id.filterRangeType)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.FILTER_TYPE_LESS))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withRecyclerView(R.id.recyclerView)
+                .atPositionOnView(0, R.id.totalDeaths))
+                .check(matches(lessThanTheNumber(500)));
+
+    }
+
+
+    @Test
+    public void checkif_greater_than_condition_in_filter_is_working() {
+        // Step-1: Click Sort button
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
+        onView(withText(Constant.FILTER)).perform(click());
+
+        onView(withId(R.id.filterValue)).perform(typeText("500"), closeSoftKeyboard());
+
+        //Enter values in spinners and click sort
+        onView(withId(R.id.filterListField)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.SORT_COLUMN_DEATHS))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withId(R.id.filterRangeType)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(Constant.FILTER_TYPE_GRT))).inRoot(isPlatformPopup()).perform(click());
+
+        onView(withRecyclerView(R.id.recyclerView)
+                .atPositionOnView(0, R.id.totalDeaths))
+                .check(matches(greaterThanTheNumber(500)));
+
     }
 
 }

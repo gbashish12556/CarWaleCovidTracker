@@ -14,6 +14,10 @@ class Constant {
         const val FILTER_RANGE_TYPE = "filteeType"
         const val FILTER_FIELD = "filteeField"
         const val FILTER_VALUE = "filteeValue"
+        const val COUNTRY_NAME = "countryName"
+        const val FILTER = "Filter"
+        const val SORT = "Sort"
+        const val RESET = "Reset"
 
     }
 

@@ -1,14 +1,16 @@
 package com.example.carwalecovidtracker;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.test.platform.ui.UiController;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 
 public class TestHelper {
 
@@ -32,4 +34,36 @@ public class TestHelper {
             }
         };
     }
+
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
+    }
+
+    static NumberGreaterThanMatcher greaterThanTheNumber(int number) {
+        return new NumberGreaterThanMatcher(number);
+    }
+
+    static NumberLessThanMatcher lessThanTheNumber(int number) {
+        return new NumberLessThanMatcher(number);
+    }
+
+    public static ViewAction waitFor(final long millis) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isRoot();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Wait for " + millis + " milliseconds.";
+            }
+
+            @Override
+            public void perform(UiController uiController, final View view) {
+                uiController.loopMainThreadForAtLeast(millis);
+            }
+        };
+    }
+
 }

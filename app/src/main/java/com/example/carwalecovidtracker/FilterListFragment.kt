@@ -19,7 +19,7 @@ import io.reactivex.subjects.PublishSubject
  */
 class FilterListFragment : androidx.fragment.app.DialogFragment() {
 
-    @BindView(R.id.sortListButton) lateinit var sortListButton: Button
+    @BindView(R.id.filterListButton) lateinit var filterListButton: Button
     @BindView(R.id.closeDialog) lateinit var closeDialog: ImageView
     @BindView(R.id.filterListField) lateinit var filterListField: Spinner
     @BindView(R.id.filterRangeType) lateinit var filterRangeType: Spinner
@@ -65,13 +65,13 @@ class FilterListFragment : androidx.fragment.app.DialogFragment() {
             dismiss()
         }
 
-        sortListButton.setOnClickListener{
+        filterListButton.setOnClickListener{
             var listType = filterRangeType.selectedItem.toString()
             var listField = filterListField.selectedItem.toString()
             var filterValue = filterValue.text.toString()
             if(validateFields(listType,listField,filterValue)){
-                filterListPublishSubject!!.onNext(FilterData(listType,listField, Integer.parseInt(filterValue)))
                 dismiss()
+                filterListPublishSubject!!.onNext(FilterData(listType,listField, Integer.parseInt(filterValue)))
             }
         }
 
