@@ -82,7 +82,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void checkif_lessthan_condition_in_filter_is_working() {
+    public void checkif_lessthan_condition_in_filter_is_working() throws InterruptedException {
         // Step-1: Click Sort button
 
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
@@ -98,8 +98,12 @@ public class MainActivityTest {
         onView(withId(R.id.filterRangeType)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is(Constant.FILTER_TYPE_LESS))).inRoot(isPlatformPopup()).perform(click());
 
+        onView(withId(R.id.filterListButton)).perform(click());
+
+//        Thread.sleep(5000);
+
         onView(withRecyclerView(R.id.recyclerView)
-                .atPositionOnView(0, R.id.totalDeaths))
+                .atPositionOnView(0, R.id.deaths))
                 .check(matches(lessThanTheNumber(500)));
 
     }
@@ -122,8 +126,10 @@ public class MainActivityTest {
         onView(withId(R.id.filterRangeType)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is(Constant.FILTER_TYPE_GRT))).inRoot(isPlatformPopup()).perform(click());
 
+        onView(withId(R.id.filterListButton)).perform(click());
+
         onView(withRecyclerView(R.id.recyclerView)
-                .atPositionOnView(0, R.id.totalDeaths))
+                .atPositionOnView(0, R.id.deaths))
                 .check(matches(greaterThanTheNumber(500)));
 
     }
