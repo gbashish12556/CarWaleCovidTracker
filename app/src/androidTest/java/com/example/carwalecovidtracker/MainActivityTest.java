@@ -18,31 +18,20 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressBack;
+
 import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.matcher.RootMatchers.isDialog;
-import static androidx.test.espresso.matcher.RootMatchers.isFocusable;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-
-
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasCategories;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
-import static androidx.test.espresso.intent.matcher.UriMatchers.hasHost;
 
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.carwalecovidtracker.TestHelper.getText;
 import static com.example.carwalecovidtracker.TestHelper.greaterThanTheNumber;
 import static com.example.carwalecovidtracker.TestHelper.lessThanTheNumber;
-import static com.example.carwalecovidtracker.TestHelper.waitFor;
+
 import static com.example.carwalecovidtracker.TestHelper.withRecyclerView;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 
