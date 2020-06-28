@@ -16,6 +16,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val allCountryWiseCases: MutableLiveData<ArrayList<CountryData>>
         get() = apiRepository.allCountryWiseList
 
+    val apiStatus: MutableLiveData<Boolean>
+        get() = apiRepository.apiStatus!!
+
+
     fun sortData(sortData: SortData){
         apiRepository.sortData(sortData)
     }

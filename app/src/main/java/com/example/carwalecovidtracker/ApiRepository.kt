@@ -25,6 +25,11 @@ class ApiRepository {
             return globaldata
         }
 
+    val apiStatus: MutableLiveData<Boolean>
+        get() {
+            return messageApiStatus
+        }
+
 
     val allCountryWiseList: MutableLiveData<ArrayList<CountryData>>
         get() {

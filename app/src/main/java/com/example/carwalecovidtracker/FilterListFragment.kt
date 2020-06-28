@@ -82,7 +82,7 @@ class FilterListFragment : androidx.fragment.app.DialogFragment() {
         if(!listType.equals("") && !listField.equals("") && !filterValue.equals("")){
             return true
         }else{
-            Toast.makeText(activity,"Invalid Fields", Toast.LENGTH_LONG)
+            Toast.makeText(activity,"Invalid Fields", Toast.LENGTH_LONG).show()
             return false
         }
 

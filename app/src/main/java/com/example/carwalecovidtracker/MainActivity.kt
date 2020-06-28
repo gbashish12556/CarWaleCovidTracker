@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
@@ -84,6 +85,9 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
             }
         })
 
+        viewModel!!.apiStatus.observe(this, Observer {status->
+            Toast.makeText(this@MainActivity,"Fetch Failes", Toast.LENGTH_LONG).show()
+        })
         viewModel!!.globalData.observe(this, Observer {globaldata->
             totalConfirmed.text = String.format(resources.getString(R.string.total_confirmed,globaldata.totalConfirmed.toString()))
             totalDeaths.text = String.format(resources.getString(R.string.total_deaths,globaldata.totalDeaths.toString()))

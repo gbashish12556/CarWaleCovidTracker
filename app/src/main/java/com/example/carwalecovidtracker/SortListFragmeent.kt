@@ -71,7 +71,7 @@ class SortListFragmeent : androidx.fragment.app.DialogFragment() {
         if(!listType.equals("") && !listField.equals("")){
             return true
         }else{
-            Toast.makeText(activity,"Iinvalid Fields", Toast.LENGTH_LONG)
+            Toast.makeText(activity,"Iinvalid Fields", Toast.LENGTH_LONG).show()
             return false
         }
     }
