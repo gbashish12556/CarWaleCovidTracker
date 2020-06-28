@@ -92,18 +92,14 @@ class MainActivity : AppCompatActivity(),CommunicationProvider {
 
         sortingPubsub.subscribe{sortData->
             if(mIdlingResource != null) {
-//                Handler().postDelayed({
                     mIdlingResource!!.setIdleState(false)
-//                },100)
             }
             viewModel!!.sortData(sortData)
         }
 
         filterPubsub.subscribe{filterData->
             if(mIdlingResource != null) {
-//                Handler().postDelayed({
                     mIdlingResource!!.setIdleState(false)
-//                },100)
             }
             viewModel!!.filterData(filterData)
         }
