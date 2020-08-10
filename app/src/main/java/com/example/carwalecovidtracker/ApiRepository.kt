@@ -3,11 +3,9 @@ package com.example.carwalecovidtracker
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.carwalecovidtracker.pojo.*
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -17,7 +15,7 @@ class ApiRepository {
     private val globaldata = MutableLiveData<GlobalData>()
     private val countryWiseList = MutableLiveData<ArrayList<CountryData>>()
     private var countryList:ArrayList<CountryData>? = null
-    private var comparators = Comparators()
+    private var originalCountryList:ArrayList<CountryData>? = null
 
     val allGlobalData: MutableLiveData<GlobalData>
         get() {
@@ -73,23 +71,23 @@ class ApiRepository {
 
     fun sortData(sortData:SortData){
 
+
         when(sortData!!.sortType){
 
             Constant.SORT_TYPE_ASC->{
 
                 when(sortData!!.sortField){
                     Constant.SORT_COLUMN_COUNTRY->{
-
-                        Collections.sort(countryList,comparators.CountryAsc())
+                        countryList?.sortBy { it.country }
                     }
                     Constant.SORT_COLUMN_TOTAL_CASES->{
-                        Collections.sort(countryList,comparators.TotalConfirmedAsc())
+                        countryList?.sortBy { it.totalConfirmed }
                     }
                     Constant.SORT_COLUMN_DEATHS->{
-                        Collections.sort(countryList,comparators.TotalDeathsAsc())
+                        countryList?.sortBy { it.totalDeaths }
                     }
                     Constant.SORT_COLUMN_RECOVERED->{
-                        Collections.sort(countryList,comparators.TotalRecoveredAsc())
+                        countryList?.sortBy { it.totalRecovered }
                     }
                 }
 
@@ -98,20 +96,18 @@ class ApiRepository {
             Constant.SORT_TYPE_DESC->{
 
                 when(sortData!!.sortField){
-
                     Constant.SORT_COLUMN_COUNTRY->{
-                        Collections.sort(countryList,comparators.CountryDesc())
+                        countryList?.sortByDescending { it.country }
                     }
                     Constant.SORT_COLUMN_TOTAL_CASES->{
-                        Collections.sort(countryList,comparators.TotalConfirmedDesc())
+                        countryList?.sortByDescending { it.totalConfirmed }
                     }
                     Constant.SORT_COLUMN_DEATHS->{
-                        Collections.sort(countryList,comparators.TotalDeathsDesc())
+                        countryList?.sortByDescending { it.totalDeaths }
                     }
                     Constant.SORT_COLUMN_RECOVERED->{
-                        Collections.sort(countryList,comparators.TotalRecoveredDesc())
+                        countryList?.sortByDescending { it.totalRecovered }
                     }
-
                 }
 
             }
@@ -124,87 +120,76 @@ class ApiRepository {
 
         var newGlobalData = GlobalData(0,0,0)
 
-        for(i in 0..countryList!!.size-1){
-            newGlobalData.totalConfirmed += countryList!![i].totalConfirmed
-            newGlobalData.totalDeaths += countryList!![i].totalDeaths
-            newGlobalData.totalRecovered += countryList!![i].totalRecovered
+        countryList?.forEach {
+            newGlobalData.totalConfirmed += it.totalConfirmed
+            newGlobalData.totalDeaths += it.totalDeaths
+            newGlobalData.totalRecovered += it.totalRecovered
         }
 
         globaldata.postValue(newGlobalData)
-        allCountryWiseList.postValue(countryList as ArrayList<CountryData>?)
+        allCountryWiseList.postValue(countryList)
         addFilter(FilterData("","",0))
     }
     fun filterData(filterData:FilterData){
-        var newCountryList = mutableListOf<CountryData>()
+
         var newGlobalData = GlobalData(0,0,0)
+
+        var newList = countryList
+
         when(filterData.filterType){
+
             Constant.FILTER_TYPE_GRT->{
+
                 when(filterData.filterField){
+
                     Constant.SORT_COLUMN_TOTAL_CASES->{
-                        for(i in 0..countryList!!.size-1){
-                            var usersCountry = App.sharedPref.getString(Constant.COUNTRY_NAME,"None")!!.toUpperCase() as CharSequence
-                            if(usersCountry  in countryList!!.get(i).countryCode.toUpperCase()){
-                                var data = countryList!!.get(i).copy()
-                                newCountryList!!.add(0,data)
-                            }else if(countryList!!.get(i).totalConfirmed >= filterData.filterValue){
-                                newCountryList.add(countryList!!.get(i))
-                            }
-                        }
-                        if(filterData.filterValue  == 0){
-                            countryList = newCountryList as ArrayList<CountryData>
-                        }
+                        newList = countryList?.filter { it.totalConfirmed > filterData.filterValue } as ArrayList<CountryData>
                     }
+
                     Constant.SORT_COLUMN_DEATHS->{
-                        for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalDeaths >= filterData.filterValue){
-                                newCountryList.add(countryList!!.get(i))
-                            }
-                        }
+                        newList= countryList?.filter { it.totalDeaths > filterData.filterValue } as ArrayList<CountryData>
                     }
+
                     Constant.SORT_COLUMN_RECOVERED->{
-                        for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalRecovered >= filterData.filterValue){
-                                newCountryList.add(countryList!!.get(i))
-                            }
-                        }
+                        newList=  countryList?.filter { it.totalRecovered > filterData.filterValue } as ArrayList<CountryData>
                     }
+
                 }
+
             }
             Constant.FILTER_TYPE_LESS->{
+
                 when(filterData.filterField){
+
                     Constant.SORT_COLUMN_TOTAL_CASES->{
-                        for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalConfirmed <= filterData.filterValue){
-                                newCountryList.add(countryList!!.get(i))
-                            }
-                        }
+                        newList =  countryList?.filter { it.totalConfirmed < filterData.filterValue } as ArrayList<CountryData>
                     }
+
                     Constant.SORT_COLUMN_DEATHS->{
-                        for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalDeaths <= filterData.filterValue){
-                                newCountryList.add(countryList!!.get(i))
-                            }
-                        }
+                        newList =  countryList?.filter { it.totalDeaths < filterData.filterValue } as ArrayList<CountryData>
                     }
+
                     Constant.SORT_COLUMN_RECOVERED->{
-                        for(i in 0..countryList!!.size-1){
-                            if(countryList!!.get(i).totalRecovered <= filterData.filterValue){
-                                newCountryList.add(countryList!!.get(i))
-                            }
-                        }
+                        newList =  countryList?.filter { it.totalRecovered < filterData.filterValue } as ArrayList<CountryData>
                     }
+
                 }
+
             }
+
         }
 
-        for(i in 0..newCountryList!!.size-1){
-            newGlobalData.totalConfirmed += newCountryList!![i].totalConfirmed
-            newGlobalData.totalDeaths += newCountryList!![i].totalDeaths
-            newGlobalData.totalRecovered += newCountryList!![i].totalRecovered
+        newList?.forEach {
+
+            newGlobalData.totalConfirmed += it.totalConfirmed
+            newGlobalData.totalDeaths += it.totalDeaths
+            newGlobalData.totalRecovered += it.totalRecovered
+
         }
 
         globaldata.postValue(newGlobalData)
-        allCountryWiseList.postValue(newCountryList as ArrayList<CountryData>?)
+        allCountryWiseList.postValue(newList)
+
         addFilter(filterData)
 
     }
